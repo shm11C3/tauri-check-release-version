@@ -30,3 +30,37 @@ jobs:
 
       - name: Print extracted version
         run: echo "Extracted version is ${{ steps.check.outputs.version }}"
+
+  invalid-config:
+    runs-on: ubuntu-latest
+    continue-on-error: true # ← エラーになるのを許容
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+      - run: |
+          mkdir -p example-app/src-tauri
+          echo '{ "name": "0.0.0" }' > example-app/src-tauri/tauri.conf.json
+      - uses: ./
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          owner: shm11C3
+          repo: tauri-check-release-version
+          tauri_config_path: ./example-app/src-tauri/tauri.conf.json
+          tag_name_format: v{VERSION}
+
+  duplicate-release:
+    runs-on: ubuntu-latest
+    continue-on-error: true # ← エラーになるのを許容
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+      - run: |
+          mkdir -p example-app/src-tauri
+          echo '{ "name": "no-version" }' > example-app/src-tauri/tauri.conf.json
+      - uses: ./
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          owner: shm11C3
+          repo: tauri-check-release-version
+          tauri_config_path: ./example-app/src-tauri/tauri.conf.json
+          tag_name_format: v{VERSION}
