@@ -22,7 +22,6 @@ If it does, the workflow will fail to prevent accidental duplicate releases.
 ```yaml
 - uses: yourname/check-tauri-release@v1
   with:
-    version: 1.0.0
     github_token: ${{ secrets.GITHUB_TOKEN }}
     owner: yourname
     repo: yourapp
