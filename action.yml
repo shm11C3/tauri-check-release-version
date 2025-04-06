@@ -38,13 +38,13 @@ runs:
 
     - name: Extract Tauri version
       id: tauri-version
-      run: node .github/scripts/extractVersion.cjs
+      run: node ${{ github.action_path }}/scripts/extractVersion.cjs
       env:
         TAURI_CONFIG_PATH: ${{ inputs.tauri_config_path }}
       shell: bash
 
     - name: Verify version on GitHub
-      run: node .github/scripts/checkVersion.cjs
+      run: node ${{ github.action_path }}/scripts/checkVersion.cjs
       env:
         GITHUB_TOKEN: ${{ inputs.github_token }}
         VERSION: ${{ steps.tauri-version.outputs.version }}
