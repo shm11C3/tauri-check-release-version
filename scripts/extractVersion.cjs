@@ -2,10 +2,10 @@ const fs = require("node:fs");
 const path = require("node:path");
 const toml = require("toml");
 
-const configDirFromEnv = process.env.TAURI_CONFIG_DIR;
+const configPathFromEnv = process.env.TAURI_CONFIG_PATH;
 let version = null;
 
-console.log("TAURI_CONFIG_DIR: ", configDirFromEnv);
+console.log("TAURI_CONFIG_DIR: ", configPathFromEnv);
 console.log("Current Directory: ", process.cwd());
 
 function parseJsonFile(filepath) {
@@ -18,7 +18,7 @@ function parseTomlFile(filepath) {
   return toml.parse(contents);
 }
 
-if (!configDirFromEnv) {
+if (!configPathFromEnv) {
   console.log(
     "TAURI_CONFIG_DIR is not set. Searching for default configuration files..."
   );
@@ -46,7 +46,7 @@ if (!configDirFromEnv) {
 } else {
   console.log("TAURI_CONFIG_DIR is set. Using specified configuration file.");
 
-  const resolvedPath = path.resolve(configDirFromEnv);
+  const resolvedPath = path.resolve(configPathFromEnv);
   console.log("Resolved TAURI_CONFIG_DIR: ", resolvedPath);
 
   if (!fs.existsSync(resolvedPath)) {
