@@ -20,7 +20,7 @@ If it does, the workflow will fail to prevent accidental duplicate releases.
 ## 📦 Example Usage
 
 ```yaml
-- uses: yourname/check-tauri-release@v1
+- uses: shm11C3/check-tauri-release@v1
   with:
     github_token: ${{ secrets.GITHUB_TOKEN }}
     owner: yourname
