@@ -5,6 +5,9 @@ const toml = require("toml");
 const configDirFromEnv = process.env.TAURI_CONFIG_DIR;
 let version = null;
 
+console.log("TAURI_CONFIG_DIR: ", configDirFromEnv);
+console.log("Current Directory: ", process.cwd());
+
 function parseJsonFile(filepath) {
   const contents = fs.readFileSync(filepath, "utf-8");
   return JSON.parse(contents);
@@ -16,6 +19,10 @@ function parseTomlFile(filepath) {
 }
 
 if (!configDirFromEnv) {
+  console.log(
+    "TAURI_CONFIG_DIR is not set. Searching for default configuration files..."
+  );
+
   const defaultDir = path.join(__dirname, "../../src-tauri");
   const candidates = [
     path.join(defaultDir, "tauri.conf.json"),
@@ -25,15 +32,23 @@ if (!configDirFromEnv) {
 
   for (const filepath of candidates) {
     if (fs.existsSync(filepath)) {
+      console.log(`Found configuration file: ${filepath}`);
+
       const config = filepath.endsWith(".toml")
         ? parseTomlFile(filepath)
         : parseJsonFile(filepath);
+
+      console.debug("Parsed configuration: ", config);
       version = extractVersion(config);
       break;
     }
   }
 } else {
+  console.log("TAURI_CONFIG_DIR is set. Using specified configuration file.");
+
   const resolvedPath = path.resolve(configDirFromEnv);
+  console.log("Resolved TAURI_CONFIG_DIR: ", resolvedPath);
+
   if (!fs.existsSync(resolvedPath)) {
     console.error(`Specified config file not found: ${resolvedPath}`);
     process.exit(1);
@@ -42,6 +57,8 @@ if (!configDirFromEnv) {
   const config = resolvedPath.endsWith(".toml")
     ? parseTomlFile(resolvedPath)
     : parseJsonFile(resolvedPath);
+
+  console.debug("Parsed configuration: ", config);
 
   version = extractVersion(config);
 }
