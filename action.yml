@@ -34,12 +34,14 @@ runs:
 
     - name: Install dependencies
       run: npm install --omit=dev
+      shell: bash
 
     - name: Extract Tauri version
       id: tauri-version
       run: node .github/scripts/extractVersion.cjs
       env:
         TAURI_CONFIG_PATH: ${{ inputs.tauri_config_path }}
+      shell: bash
 
     - name: Verify version on GitHub
       run: node .github/scripts/checkVersion.cjs
@@ -49,6 +51,7 @@ runs:
         OWNER: ${{ inputs.owner }}
         REPO: ${{ inputs.repo }}
         TAG_NAME_FORMAT: ${{ inputs.tag_name_format }}
+      shell: bash
 
     - name: Set version output
       run: echo "version=${{ steps.tauri-version.outputs.version }}" >> $GITHUB_OUTPUT
