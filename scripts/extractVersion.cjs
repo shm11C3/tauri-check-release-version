@@ -16,7 +16,7 @@ function parseTomlFile(filepath) {
   return toml.parse(contents);
 }
 
-if (!configPathFromEnv) {
+if (!configDirFromEnv) {
   const defaultDir = path.join(__dirname, "../../src-tauri");
   const candidates = [
     path.join(defaultDir, "tauri.conf.json"),
@@ -34,7 +34,7 @@ if (!configPathFromEnv) {
     }
   }
 } else {
-  const resolvedPath = path.resolve(configPathFromEnv);
+  const resolvedPath = path.resolve(configDirFromEnv);
   if (!fs.existsSync(resolvedPath)) {
     console.error(`Specified config file not found: ${resolvedPath}`);
     process.exit(1);
