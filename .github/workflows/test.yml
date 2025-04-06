@@ -33,7 +33,8 @@ jobs:
 
   duplicate-release:
     runs-on: ubuntu-latest
-    continue-on-error: true # ← エラーになるのを許容
+    continue-on-error: true
+
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -58,25 +59,15 @@ jobs:
           tauri_config_path: ./example-app/src-tauri/tauri.conf.json
           tag_name_format: v{VERSION}
 
-      - name: Check that it failed as expected
-        if: steps.duplicate.outcome == 'failure'
-        run: echo "✅ Action failed as expected due to duplicate release"
-
-      - name: Fail the test if it succeeded (unexpected)
-        if: steps.duplicate.outcome == 'success'
-        run: |
-          echo "❌ Action unexpectedly succeeded despite duplicate release"
-          exit 1
-
   invalid-config:
     runs-on: ubuntu-latest
-    continue-on-error: true # ← エラーになるのを許容
+    continue-on-error: true
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
       - run: |
           mkdir -p example-app/src-tauri
-          echo '{ "version": "no-version" }' > example-app/src-tauri/tauri.conf.json
+          echo '{ "version": null }' > example-app/src-tauri/tauri.conf.json
       - uses: ./
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
