@@ -5,8 +5,16 @@
   "license": "MIT",
   "author": "shm11C3",
   "type": "commonjs",
+  "scripts": {
+    "build:extract": "ncc build scripts/extractVersion.cjs -o dist/extractVersion",
+    "build:check": "ncc build scripts/checkVersion.cjs -o dist/checkVersion",
+    "build": "npm run build:extract && npm run build:check"
+  },
   "dependencies": {
-    "toml": "^3.0.0",
-    "@octokit/rest": "^20.0.0"
+    "@octokit/rest": "^20.0.0",
+    "toml": "^3.0.0"
+  },
+  "devDependencies": {
+    "@vercel/ncc": "^0.38.3"
   }
 }
