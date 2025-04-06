@@ -18,6 +18,10 @@ function parseTomlFile(filepath) {
   return toml.parse(contents);
 }
 
+function extractVersion(config) {
+  return config.package?.version || config.version || null;
+}
+
 if (!configPathFromEnv) {
   console.log(
     "TAURI_CONFIG_DIR is not set. Searching for default configuration files..."
