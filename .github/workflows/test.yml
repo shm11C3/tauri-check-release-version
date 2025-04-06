@@ -29,7 +29,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           owner: shm11C3
-          repo: tauri-check-release-version/scripts
+          repo: tauri-check-release-version
           tag_name_format: v{VERSION}
 
       - name: Print extracted version
