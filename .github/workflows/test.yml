@@ -31,6 +31,7 @@ jobs:
           owner: shm11C3
           repo: tauri-check-release-version
           tag_name_format: v{VERSION}
+          tauri_config_path: ./example-app/src-tauri/tauri.conf.json
 
       - name: Print extracted version
         run: echo "Extracted version is ${{ steps.check.outputs.version }}"

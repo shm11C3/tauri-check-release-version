@@ -28,3 +28,17 @@ If it does, the workflow will fail to prevent accidental duplicate releases.
     tag_name_format: v{VERSION}
     tauri_config_path: ./src-tauri/tauri.conf.json
 ```
+
+## 🧪 Example App
+
+This repository includes a real sample Tauri project under `example-app/`.
+It is used in CI to verify that the action works with an actual Tauri environment.
+
+To run locally:
+
+```bash
+cd example-app
+npm install
+cargo install tauri-cli
+npm run tauri dev
+```
