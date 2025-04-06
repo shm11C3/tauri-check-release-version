@@ -1,0 +1,36 @@
+name: Test Composite Action
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout this repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+
+      - name: Create dummy tauri.conf.json
+        run: |
+          mkdir -p src-tauri
+          echo '{ "package": { "version": "0.0.1" } }' > src-tauri/tauri.conf.json
+
+      - name: Run action (should pass unless release already exists)
+        id: check
+        uses: ./ # ローカルの Composite Action を呼び出す
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          owner: shm11C3
+          repo: tauri-check-release-version/scripts
+          tag_name_format: v{VERSION}
+
+      - name: Print extracted version
+        run: echo "Extracted version is ${{ steps.check.outputs.version }}"

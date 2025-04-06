@@ -1,0 +1,12 @@
+{
+  "name": "tauri-check-release-version",
+  "version": "1.0.0",
+  "description": "Validate tauri version and GitHub tags to prevent overwriting releases.",
+  "license": "MIT",
+  "author": "shm11C3",
+  "type": "commonjs",
+  "dependencies": {
+    "toml": "^3.0.0",
+    "@octokit/rest": "^20.0.0"
+  }
+}

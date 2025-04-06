@@ -1,0 +1,55 @@
+name: Check for Duplicate Tauri Release Version
+description: "Fails if the given version tag already exists on GitHub Releases"
+author: "shm11C3"
+
+inputs:
+  github_token:
+    description: "GitHub token for API access"
+    required: true
+  owner:
+    description: "GitHub repository owner"
+    required: true
+  repo:
+    description: "GitHub repository name"
+    required: true
+  tag_name_format:
+    description: "Tag name format (default: v{VERSION})"
+    required: false
+    default: "v{VERSION}"
+  tauri_config_path:
+    description: "Path to the Tauri configuration file directory (default: src-tauri)"
+    required: false
+
+outputs:
+  version:
+    description: "Version string that was checked"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: lts/*
+
+    - name: Install dependencies
+      run: npm install --omit=dev
+
+    - name: Extract Tauri version
+      id: tauri-version
+      run: node .github/scripts/extractVersion.cjs
+      env:
+        TAURI_CONFIG_PATH: ${{ inputs.tauri_config_path }}
+
+    - name: Verify version on GitHub
+      run: node .github/scripts/checkVersion.cjs
+      env:
+        GITHUB_TOKEN: ${{ inputs.github_token }}
+        VERSION: ${{ steps.tauri-version.outputs.version }}
+        OWNER: ${{ inputs.owner }}
+        REPO: ${{ inputs.repo }}
+        TAG_NAME_FORMAT: ${{ inputs.tag_name_format }}
+
+    - name: Set version output
+      run: echo "version=${{ steps.tauri-version.outputs.version }}" >> $GITHUB_OUTPUT
+      shell: bash
