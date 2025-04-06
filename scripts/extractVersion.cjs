@@ -16,15 +16,35 @@ function parseTomlFile(filepath) {
   return toml.parse(contents);
 }
 
-if (fs.existsSync(path.join(configDirFromEnv, "tauri.conf.json"))) {
-  const config = parseJsonFile(path.join(configDirFromEnv, "tauri.conf.json"));
-  version = config.version;
-} else if (fs.existsSync(path.join(configDirFromEnv, "tauri.conf.json5"))) {
-  const config = parseJsonFile(path.join(configDirFromEnv, "tauri.conf.json5"));
-  version = config.version;
-} else if (fs.existsSync(path.join(configDirFromEnv, "Tauri.toml"))) {
-  const config = parseTomlFile(path.join(configDirFromEnv, "Tauri.toml"));
-  version = config.version;
+if (!configPathFromEnv) {
+  const defaultDir = path.join(__dirname, "../../src-tauri");
+  const candidates = [
+    path.join(defaultDir, "tauri.conf.json"),
+    path.join(defaultDir, "tauri.conf.json5"),
+    path.join(defaultDir, "Tauri.toml"),
+  ];
+
+  for (const filepath of candidates) {
+    if (fs.existsSync(filepath)) {
+      const config = filepath.endsWith(".toml")
+        ? parseTomlFile(filepath)
+        : parseJsonFile(filepath);
+      version = extractVersion(config);
+      break;
+    }
+  }
+} else {
+  const resolvedPath = path.resolve(configPathFromEnv);
+  if (!fs.existsSync(resolvedPath)) {
+    console.error(`Specified config file not found: ${resolvedPath}`);
+    process.exit(1);
+  }
+
+  const config = resolvedPath.endsWith(".toml")
+    ? parseTomlFile(resolvedPath)
+    : parseJsonFile(resolvedPath);
+
+  version = extractVersion(config);
 }
 
 if (!version) {
