@@ -18,11 +18,6 @@ jobs:
         with:
           node-version: lts/*
 
-      - name: Create dummy tauri.conf.json
-        run: |
-          mkdir -p src-tauri
-          echo '{ "version": "0.0.1" }' > src-tauri/tauri.conf.json
-
       - name: Run action (should pass unless release already exists)
         id: check
         uses: ./ # ローカルの Composite Action を呼び出す
