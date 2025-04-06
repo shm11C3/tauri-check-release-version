@@ -1,0 +1,77 @@
+name: Test Composite Action
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout this repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+
+      - name: Run action (should pass unless release already exists)
+        id: check
+        uses: ./ # ローカルの Composite Action を呼び出す
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          owner: shm11C3
+          repo: tauri-check-release-version
+          tag_name_format: v{VERSION}
+          tauri_config_path: ./example-app/src-tauri/tauri.conf.json
+
+      - name: Print extracted version
+        run: echo "Extracted version is ${{ steps.check.outputs.version }}"
+
+  duplicate-release:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+      - run: |
+          mkdir -p example-app/src-tauri
+          echo '{ "version": "0.0.0" }' > example-app/src-tauri/tauri.conf.json
+      - uses: ./
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          owner: shm11C3
+          repo: tauri-check-release-version
+          tauri_config_path: ./example-app/src-tauri/tauri.conf.json
+          tag_name_format: v{VERSION}
+
+      - name: Run Composite Action (expected to fail)
+        id: duplicate
+        uses: ./
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          owner: shm11C3
+          repo: tauri-check-release-version
+          tauri_config_path: ./example-app/src-tauri/tauri.conf.json
+          tag_name_format: v{VERSION}
+
+  invalid-config:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+      - run: |
+          mkdir -p example-app/src-tauri
+          echo '{ "version": null }' > example-app/src-tauri/tauri.conf.json
+      - uses: ./
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          owner: shm11C3
+          repo: tauri-check-release-version
+          tauri_config_path: ./example-app/src-tauri/tauri.conf.json
+          tag_name_format: v{VERSION}

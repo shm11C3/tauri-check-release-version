@@ -1,0 +1,23 @@
+name: Use Check Tauri Release Action
+
+on:
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - uses: shm11C3/check-tauri-release@v1
+        id: check
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          owner: your-username
+          repo: your-repo
+          tag_name_format: v{VERSION}
+          tauri_config_path: ./example-app/src-tauri/tauri.conf.json
+
+      - name: Log version
+        run: echo "Checked version ${{ steps.check.outputs.version }}"
