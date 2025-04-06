@@ -2,8 +2,7 @@ const fs = require("node:fs");
 const path = require("node:path");
 const toml = require("toml");
 
-const configDirFromEnv =
-  process.env.TAURI_CONFIG_DIR || path.join(__dirname, "./src-tauri");
+const configDirFromEnv = process.env.TAURI_CONFIG_DIR;
 let version = null;
 
 function parseJsonFile(filepath) {

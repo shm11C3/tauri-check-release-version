@@ -9,13 +9,13 @@ If it does, the workflow will fail to prevent accidental duplicate releases.
 
 ## ✅ Inputs
 
-| Name                | Required | Description                                   |
-| ------------------- | -------- | --------------------------------------------- |
-| `github_token`      | ✅       | GitHub token for API access                   |
-| `owner`             | ✅       | GitHub repository owner                       |
-| `repo`              | ✅       | GitHub repository name                        |
-| `tag_name_format`   | ❌       | Tag format like `{VERSION}` (default)         |
-| `tauri_config_path` | ❌       | Path to tauri config (default: `./src-tauri`) |
+| Name                | Required | Description                                                   |
+| ------------------- | -------- | ------------------------------------------------------------- |
+| `github_token`      | ✅       | GitHub token for API access                                   |
+| `owner`             | ✅       | GitHub repository owner                                       |
+| `repo`              | ✅       | GitHub repository name                                        |
+| `tag_name_format`   | ❌       | Tag format like `{VERSION}` (default)                         |
+| `tauri_config_path` | ❌       | Path to tauri config (default: `./src-tauri/tauri.conf.json`) |
 
 ## 📦 Example Usage
 
@@ -26,5 +26,5 @@ If it does, the workflow will fail to prevent accidental duplicate releases.
     owner: yourname
     repo: yourapp
     tag_name_format: v{VERSION}
-    tauri_config_path: ./src-tauri
+    tauri_config_path: ./src-tauri/tauri.conf.json
 ```
