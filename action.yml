@@ -23,6 +23,7 @@ inputs:
 outputs:
   version:
     description: "Version string that was checked"
+    value: ${{ steps.tauri-version.outputs.version }}
 
 runs:
   using: "composite"
