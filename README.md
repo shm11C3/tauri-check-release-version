@@ -11,11 +11,11 @@ If it does, the workflow will fail to prevent accidental duplicate releases.
 
 | Name                | Required | Description                                                   |
 | ------------------- | -------- | ------------------------------------------------------------- |
-| `github_token`      | ✅       | GitHub token for API access                                   |
-| `owner`             | ✅       | GitHub repository owner                                       |
-| `repo`              | ✅       | GitHub repository name                                        |
-| `tag_name_format`   | ❌       | Tag format like `{VERSION}` (default)                         |
-| `tauri_config_path` | ❌       | Path to tauri config (default: `./src-tauri/tauri.conf.json`) |
+| `github_token`      | yes       | GitHub token for API access                                   |
+| `owner`             | yes       | GitHub repository owner                                       |
+| `repo`              | yes       | GitHub repository name                                        |
+| `tag_name_format`   | no       | Tag format like `{VERSION}` (default)                         |
+| `tauri_config_path` | no       | Path to tauri config (default: `./src-tauri/tauri.conf.json`) |
 
 ## 📦 Example Usage
 
