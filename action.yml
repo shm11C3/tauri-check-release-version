@@ -1,6 +1,9 @@
-name: Check for Duplicate Tauri Release Version
+name: Tauri Check Release Version Action
 description: "Fails if the given version tag already exists on GitHub Releases"
 author: "shm11C3"
+branding:
+  icon: "check-circle"
+  color: "gray-dark"
 
 inputs:
   github_token:
