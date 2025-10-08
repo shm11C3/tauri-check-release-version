@@ -14,7 +14,7 @@ jobs:
         uses: actions/checkout@v5
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: lts/*
 
@@ -37,7 +37,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v5
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
       - run: |
           mkdir -p example-app/src-tauri
           echo '{ "version": "0.0.0" }' > example-app/src-tauri/tauri.conf.json
@@ -64,7 +64,7 @@ jobs:
     continue-on-error: true
     steps:
       - uses: actions/checkout@v5
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
       - run: |
           mkdir -p example-app/src-tauri
           echo '{ "version": null }' > example-app/src-tauri/tauri.conf.json
